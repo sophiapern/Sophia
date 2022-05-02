@@ -1,0 +1,32 @@
+function xdot = unstable_partd(t,x)
+    xdot = zeros(2,1);
+    xdot(1) = x(2);
+
+        m = 5;
+        J = pi/2;
+        r = 1;
+        M = m + (J/(r^2));
+        k1 = 1;
+        k2 = 2;
+        A = 4;
+        E = 3;
+        L = 1.25;
+        B = (A*E)/L;
+        K = k1 + k2 + B;
+        wn = sqrt(K/M);
+  
+    xdot(2) = (-K/M)*x(1)-(M*cos(wn*t));
+
+        t=0:0.001:20;
+
+        %{
+figure
+t0 = 0; tf = 20;
+x0 = [0.1 .1];
+[t,x] = ode45('unstable_partd', [t0 tf],x0);
+plot(t,x)
+title('Response of the System, Unstable and Resonating')
+xlabel('Time(t)')
+ylabel('Displacement(x)')
+legend('Displacement', 'Velocity')
+    %}
