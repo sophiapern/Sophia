@@ -1,0 +1,41 @@
+function xdot = undamped_partb(t,x)
+    xdot = zeros(2,1);
+    xdot(1) = x(2);
+
+        m = 5;
+        J = pi/2;
+        r = 1;
+        M = m + (J/(r^2));
+        k1 = 1;
+        k2 = 2;
+        A = 4;
+        E = 3;
+        L = 1.25;
+        B = (A*E)/L;
+        K = k1 + k2 + B;
+        wn = sqrt(K/M);
+        c = 0;
+  
+    xdot(2) = (-K/M)*x(1)-(c/M)*x(2);
+
+        x0 = 1;
+        v0 = 0;
+
+        t=0:0.001:20;
+
+    x = cos(wn*t);
+
+
+    %{
+figure
+t0 = 0; tf = 20;
+x0 = [0.1 .1];
+[t,x] = ode45('undamped_partb', [t0 tf],x0);
+plot(t,x)
+title('Response of the System, Undamped')
+xlabel('Time(t)')
+ylabel('Displacement(x)')
+legend('Displacement', 'Velocity')
+    %}
+
+end 
