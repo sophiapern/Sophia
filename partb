@@ -1,0 +1,46 @@
+function xdot = partb(t,x)
+    xdot = zeros(2,1);
+    xdot(1) = x(2);
+    xdot(2) = -0.304*x(1) - 0.152*x(2);
+
+    m = 5;
+    J = pi/2;
+    r = 1;
+    M = m + (J/(r^2));
+    k1 = 1;
+    k2 = 2;
+    A = 4;
+    E = 3;
+    L = 1.25;
+    B = (A*E)/L;
+    K = k1 + k2 + B;
+    wn = sqrt(K/M);
+    c = 1;
+  
+    x0 = 1;
+    v0 = 0;
+
+    t=0:0.001:20;
+
+    z = c/(2*M*wn);
+    wd = wn*sqrt(1-z^2);
+    A = sqrt(((x0^2)*(wd^2)+(v0+z*wn*x0)^2)/wd^2);
+    phi = atan((x0*wd)/(v0+z*wn*x0));
+    x = A*exp(-z.*wn.*t).*sin(wd.*t+phi); 
+
+
+    %{
+figure
+t0 = 0; tf = 60;
+x0 = [0.1 .1];
+[t,x] = ode45('partb', [t0 tf],x0);
+plot(t,x)
+title('Response of the System')
+xlabel('Time(t)')
+ylabel('Displacement(x)')
+legend('Displacement', 'Velocity')
+    %}
+
+end 
+
+
