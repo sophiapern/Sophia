@@ -1,0 +1,42 @@
+function xdot = over_damped_partb(t,x)
+    xdot = zeros(2,1);
+    xdot(1) = x(2);
+
+        m = 5;
+        J = pi/2;
+        r = 1;
+        M = m + (J/(r^2));
+        k1 = 1;
+        k2 = 2;
+        A = 4;
+        E = 3;
+        L = 1.25;
+        B = (A*E)/L;
+        K = k1 + k2 + B;
+        wn = sqrt(K/M);
+        c = 15;
+  
+    xdot(2) = (-K/M)*x(1)-(c/M)*x(2);
+
+        x0 = 1;
+        v0 = 0;
+
+        t=0:0.001:20;
+
+    z = c/(2*M*wn);
+    a1 = (-v0+(-z+sqrt((z^2)-1)*wn*x0))/(2*wn*sqrt((z^2)-1));
+    a2 = (v0+(z+sqrt((z^2)-1)*wn*x0))/(2*wn*sqrt((z^2)-1));
+    x = exp(-z.*wn.*t).*(a1.*exp(-wn.*sqrt((z^2)-1)).*t+a2.*exp(wn.*sqrt((z^2)-1).*t));
+
+   
+      %{
+    figure
+    t0 = 0; tf = 10;
+    x0 = [.5 .5];
+    [t,x] = ode45('over_damped_partb', [t0 tf],x0);
+    plot(t,x)
+    title('Response of the System, OverDamped')
+    xlabel('Time(t)')
+    ylabel('Displacement(x)')
+    legend('Displacement', 'Velocity')
+        %}
