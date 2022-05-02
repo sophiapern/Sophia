@@ -1,0 +1,48 @@
+function xdot = partf(t,x)
+    xdot = zeros(2,1);
+    xdot(1) = x(2);
+
+    step = zeros(size(t));
+    step(t>=3) = 1;
+    step(t<3) = 0;
+
+    H = heaviside(3);
+    
+        m = 5;
+        J = pi/2;
+        r = 1;
+        M = m + (J/(r^2));
+        k1 = 1;
+        k2 = 2;
+        A = 4;
+        E = 3;
+        L = 1.25;
+        B = (A*E)/L;
+        K = k1 + k2 + B;
+        wn = sqrt(K/M);
+
+        x0 = 2;
+        v0 = 0;
+
+    F = step.*5 + sin(t)+cos(t-2*pi);
+    xdot(2) = (-K/M)*x(1)+ F;
+
+        t=0:0.001:20;
+
+    x = step.*(.397-.397.*cos(1.385.*(t-3)))+.166.*sin(t)+.23.*sin(1.385.*t)+2.043.*cos(1.385.*t);
+
+    plot(t,x,'y');
+    hold on
+    yline(0)
+
+       %{
+figure
+t0 = 0; tf = 20;
+x0 = [2 0];
+[t,x] = ode45('partf', [t0 tf],x0);
+plot(t,x)
+title('Response of the System')
+xlabel('Time(t)')
+ylabel('Displacement(x)')
+legend('Displacement', 'Velocity')
+    %}
